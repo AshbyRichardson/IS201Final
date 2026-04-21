@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hobbies | Ashby Richardson</title>
+  <link rel="stylesheet" href="../STYLES/hobbies.css" />
+</head>
+<body>
+
+  <div class="top-nav">
+    <a href="index.html">Home</a>
+    <a href="resume.html">Resume</a>
+  </div>
+
+  <div class="hero">
+    <h1>My Hobbies</h1>
+    <p>Snowboarding • Soccer • Travel • Cliff Jumping</p>
+  </div>
+
+  <div class="anchor-nav">
+    <a href="#snowboarding">Snowboarding</a> |
+    <a href="#soccer">Soccer</a> |
+    <a href="#bucketlist">Travel History</a> |
+    <a href="#video">Video About Croatia</a> |
+    <a href="#game">Snake Game</a> |
+    <a href="#tableau">Tableau Data</a>
+  </div>
+
+  <div id="snowboarding" class="content-block">
+    <h2>Snowboarding</h2>
+    <p>Growing up in Utah, snowboarding has always been a big part of my life. There is nothing quite like the feeling of
+      riding on fresh powder, surrounded by the beautiful mountains.
+    </p>
+    
+    <div class="photo-row">
+        <img src="../images/snowboard.png.webp"/>
+        <p class="caption">A beautiful day on the slopes</p>
+    </div>
+  </div>
+
+  <div id="soccer" class="content-block">
+    <h2>Soccer</h2>
+    <p>My older brother was a really good soccer player, so i've played soccer for most of my life. It's a sport that taught me a lot about teamwork and persistence. I love to play with my friends and old teammates whenever I can..</p>
+    
+    <div class="photo-row">
+        <img src="../images/soccer.png.jpg"/>
+        <p class="caption">The beautiful game</p>
+    </div>
+  </div>
+
+  <div id="bucketlist" class="content-block">
+    <h2>Places I Have Been</h2>
+        <img src="../images/caption.jpg"/>
+        <p class="caption">Rijeka Croatia</p>
+    <ol class="bucket-list">
+      <li><strong>Croatia</strong>
+        <ul>
+          <li>Zagreb</li>
+          <li>Rijeka</li>
+          <li>Zadar</li>
+        </ul>
+      </li>
+      <li><strong>Bosnia & Herzegovina</strong>
+        <ul>
+          <li>Sarajevo</li>
+          <li>Mostar</li>
+        </ul>
+      </li>
+      <li><strong>Serbia</strong>
+        <ul>
+          <li>Belgrade</li>
+          <li>Novi Sad</li>
+        </ul>
+      </li>
+    </ol>
+  </div>
+
+  <div id="video" class="media-block">
+    <h2>Featured Video</h2>
+    <iframe width="560" height="315" 
+        src="https://www.youtube.com/embed/JuDCQJMMNzs" 
+        title="YouTube video player" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+    </iframe>
+    <p>This talks about the beauty of Croatia, where I served my mission.</p>
+  </div>
+
+  <div id="game" class="game-link-block">
+    <h2>BYU vs. Utah Snake Game</h2>
+    <p>Guide the Cougar and eat as many Utes as you can.</p>
+    <a href="snake.html" class="btn">Play the Game</a>
+  </div>
+<!-- this section is for the tableau viz --> 
+<div id="tableau-container" class="media-block" style="width: 100%; max-width: 1200px; margin: 0 auto;">
+    <h2>Global Visualization</h2>
+    <div class='tableauPlaceholder' id='viz1713735000000' style='position: relative'>
+        <noscript>
+            <a href='#'>
+                <img alt='Dashboard World Map ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;fs&#47;fsi-2016-world-map&#47;DashboardWorldMap820&#47;1_rss.png' style='border: none' />
+            </a>
+        </noscript>
+        <object class='tableauViz' style='display:none;'>
+            <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> 
+            <param name='embed_code_version' value='3' /> 
+            <param name='site_root' value='' />
+            <param name='name' value='fsi-2016-world-map&#47;DashboardWorldMap820' />
+            <param name='tabs' value='no' />
+            <param name='toolbar' value='yes' />
+            <param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;fs&#47;fsi-2016-world-map&#47;DashboardWorldMap820&#47;1.png' /> 
+            <param name='animate_transition' value='yes' />
+            <param name='display_static_image' value='yes' />
+            <param name='display_spinner' value='yes' />
+            <param name='display_overlay' value='yes' />
+            <param name='display_count' value='yes' />
+            <param name='language' value='en-US' />
+        </object>
+    </div>                
+    
+    <script type='text/javascript'>                    
+        var divElement = document.getElementById('viz1713735000000');                    
+        var vizElement = divElement.getElementsByTagName('object')[0];                    
+        
+        // This ensures the viz scales well on both desktop and mobile
+        if ( divElement.offsetWidth > 800 ) { 
+            vizElement.style.width='100%';vizElement.style.height='827px';
+        } else if ( divElement.offsetWidth > 500 ) { 
+            vizElement.style.width='100%';vizElement.style.height='827px';
+        } else { 
+            vizElement.style.width='100%';vizElement.style.height='1227px';
+        }                     
+        
+        var scriptElement = document.createElement('script');                    
+        scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    
+        vizElement.parentNode.insertBefore(scriptElement, vizElement);                
+    </script>
+</div>
+
+  <footer>
+    <p>&copy; 2026 Ashby Richardson. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

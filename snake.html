@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BYU vs. Utah Snake Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #002654;
+      --gold: #C8A951;
+      --red: #CC0000;
+      --bg: #0a0e1a;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      font-family: 'Lato', sans-serif;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding-bottom: 3rem;
+    }
+
+    .top-bar {
+      width: 100%;
+      background: var(--navy);
+      border-bottom: 3px solid var(--gold);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.9rem 2rem;
+    }
+    .top-bar a {
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .top-bar a:hover { color: white; }
+    .top-bar .title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: white;
+    }
+    .top-bar .title span { color: var(--gold); }
+
+    header {
+      text-align: center;
+      padding: 2rem 1rem 1rem;
+    }
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 5vw, 2.6rem);
+      margin-bottom: 0.3rem;
+    }
+    header h1 .byu { color: var(--gold); }
+    header h1 .utes { color: var(--red); }
+    header p { color: rgba(255,255,255,0.45); font-size: 0.9rem; letter-spacing: 1px; }
+
+    .scoreboard {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+      background: rgba(255,255,255,0.05);
+      border: 2px solid rgba(200,169,81,0.25);
+      padding: 0.8rem 2.5rem;
+      margin: 1rem 0;
+    }
+    .score-block { text-align: center; }
+    .score-block .lbl {
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+    }
+    .score-block .val {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      line-height: 1;
+    }
+    .score-block.gold .val { color: var(--gold); }
+    .divider { color: rgba(255,255,255,0.15); font-size: 1.5rem; }
+
+    .game-wrapper {
+      position: relative;
+      border: 3px solid var(--gold);
+      box-shadow: 0 0 50px rgba(200,169,81,0.12);
+    }
+    canvas {
+      display: block;
+      background: #0d1321;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+    .overlay.hidden { display: none; }
+    .overlay h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .overlay p {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.95rem;
+      max-width: 300px;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    .overlay .result {
+      font-size: 1.2rem;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .play-btn {
+      background: var(--gold);
+      color: var(--navy);
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 0.9rem 2.8rem;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .play-btn:hover { background: white; transform: scale(1.04); }
+
+    .controls {
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+    .controls p {
+      color: rgba(255,255,255,0.3);
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      margin-bottom: 0.8rem;
+    }
+    .dpad {
+      display: grid;
+      grid-template-columns: repeat(3, 46px);
+      grid-template-rows: repeat(2, 46px);
+      gap: 4px;
+      justify-content: center;
+    }
+    .dpad-btn {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.7);
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: background 0.1s;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .dpad-btn:active, .dpad-btn.pressed { background: var(--gold); color: var(--navy); }
+    .btn-up    { grid-column: 2; grid-row: 1; }
+    .btn-left  { grid-column: 1; grid-row: 2; }
+    .btn-down  { grid-column: 2; grid-row: 2; }
+    .btn-right { grid-column: 3; grid-row: 2; }
+
+    .legend {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1.5rem;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.4);
+      justify-content: center;
+    }
+    .legend-item { display: flex; align-items: center; gap: 0.5rem; }
+    .swatch { width: 22px; height: 22px; border-radius: 3px; }
+
+    .speed-note {
+      margin-top: 1rem;
+      color: rgba(255,255,255,0.25);
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="hobbies.html">Back to Hobbies</a>
+  <span class="title">Ashby<span>Richardson</span></span>
+  <a href="index.html">Home</a>
+</div>
+
+<header>
+  <h1><span class="byu">BYU Cougar</span> vs. <span class="utes">Utah Utes</span></h1>
+  <p>Eat every Ute you can find. Don't hit the walls.</p>
+</header>
+
+<div class="scoreboard">
+  <div class="score-block gold">
+    <div class="lbl">Score</div>
+    <div class="val" id="scoreVal">0</div>
+  </div>
+  <div class="divider">|</div>
+  <div class="score-block">
+    <div class="lbl">Best</div>
+    <div class="val" id="bestVal" style="color:rgba(255,255,255,0.6)">0</div>
+  </div>
+  <div class="divider">|</div>
+  <div class="score-block">
+    <div class="lbl">Eaten</div>
+    <div class="val" id="eatenVal" style="color:var(--red)">0</div>
+  </div>
+</div>
+
+<div class="game-wrapper">
+  <canvas id="canvas" width="480" height="480"></canvas>
+
+  <div class="overlay" id="startScreen">
+    <h2>BYU vs. <span style="color:var(--red)">Utah</span></h2>
+    <p>Guide the BYU player to eat as many Utah Utes as possible. Don't run into the walls or yourself!</p>
+    <button class="play-btn" onclick="startGame()">Start Game</button>
+  </div>
+
+  <div class="overlay hidden" id="endScreen">
+    <h2 style="color:var(--red)">Cougar Down!</h2>
+    <div class="result" id="endResult">Score: 0</div>
+    <p id="endMsg">The Utes celebrated. Try again!</p>
+    <button class="play-btn" onclick="startGame()">Play Again</button>
+  </div>
+</div>
+
+<div class="controls">
+  <p>Arrow keys or tap below</p>
+  <div class="dpad">
+    <button class="dpad-btn btn-up"    id="btnU" onpointerdown="tap('UP')">&#9650;</button>
+    <button class="dpad-btn btn-left"  id="btnL" onpointerdown="tap('LEFT')">&#9668;</button>
+    <button class="dpad-btn btn-down"  id="btnD" onpointerdown="tap('DOWN')">&#9660;</button>
+    <button class="dpad-btn btn-right" id="btnR" onpointerdown="tap('RIGHT')">&#9658;</button>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item">
+    <canvas id="swatchBYU" width="22" height="22" class="swatch"></canvas>
+    <span>BYU Player (you)</span>
+  </div>
+  <div class="legend-item">
+    <canvas id="swatchUTE" width="22" height="22" class="swatch"></canvas>
+    <span>Utah Ute (eat me)</span>
+  </div>
+</div>
+
+<div class="speed-note">Speed increases every 3 Utes eaten</div>
+
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  const COLS = 20, ROWS = 20, CELL = canvas.width / COLS;
+
+  // ─── DRAW HELPERS ────────────────────────────────────────────────────────────
+
+  function drawBYUHead(cx, cy, size, dir) {
+    const s = size * 0.9;
+    ctx.save();
+    ctx.translate(cx, cy);
+
+    // Rotate based on direction
+    const angles = { RIGHT: 0, DOWN: Math.PI / 2, LEFT: Math.PI, UP: -Math.PI / 2 };
+    ctx.rotate(angles[dir] || 0);
+
+    // Helmet shell — navy
+    ctx.beginPath();
+    ctx.arc(0, 0, s * 0.46, Math.PI, 0, false);
+    ctx.lineTo(s * 0.46, s * 0.15);
+    ctx.quadraticCurveTo(s * 0.46, s * 0.5, 0, s * 0.5);
+    ctx.quadraticCurveTo(-s * 0.46, s * 0.5, -s * 0.46, s * 0.15);
+    ctx.closePath();
+    ctx.fillStyle = '#002654';
+    ctx.fill();
+
+    // Face mask area — gold
+    ctx.beginPath();
+    ctx.arc(0, s * 0.08, s * 0.28, 0, Math.PI * 2);
+    ctx.fillStyle = '#f0d98a';
+    ctx.fill();
+
+    // Face mask bars — gold
+    ctx.strokeStyle = '#C8A951';
+    ctx.lineWidth = s * 0.07;
+    ctx.lineCap = 'round';
+    // Horizontal bar
+    ctx.beginPath();
+    ctx.moveTo(-s * 0.28, s * 0.08);
+    ctx.lineTo(s * 0.28, s * 0.08);
+    ctx.stroke();
+    // Vertical bar
+    ctx.beginPath();
+    ctx.moveTo(0, -s * 0.18);
+    ctx.lineTo(0, s * 0.34);
+    ctx.stroke();
+
+    // Eyes
+    ctx.fillStyle = '#222';
+    ctx.beginPath(); ctx.arc(-s * 0.12, s * 0.01, s * 0.06, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc( s * 0.12, s * 0.01, s * 0.06, 0, Math.PI * 2); ctx.fill();
+
+    // Helmet stripe — gold
+    ctx.beginPath();
+    ctx.moveTo(0, -s * 0.46);
+    ctx.lineTo(0, s * 0.12);
+    ctx.strokeStyle = '#C8A951';
+    ctx.lineWidth = s * 0.1;
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  function drawBYUBody(cx, cy, size) {
+    ctx.save();
+    ctx.translate(cx, cy);
+    const s = size * 0.85;
+    // Jersey — navy with gold stripe
+    ctx.beginPath();
+    ctx.roundRect(-s * 0.42, -s * 0.42, s * 0.84, s * 0.84, s * 0.12);
+    ctx.fillStyle = '#002654';
+    ctx.fill();
+    // Gold side stripe
+    ctx.fillStyle = '#C8A951';
+    ctx.fillRect(-s * 0.08, -s * 0.42, s * 0.16, s * 0.84);
+    ctx.restore();
+  }
+
+  function drawUTEPlayer(cx, cy, size) {
+    const s = size * 0.9;
+    ctx.save();
+    ctx.translate(cx, cy);
+
+    // Helmet shell — Utah red
+    ctx.beginPath();
+    ctx.arc(0, 0, s * 0.46, Math.PI, 0, false);
+    ctx.lineTo(s * 0.46, s * 0.15);
+    ctx.quadraticCurveTo(s * 0.46, s * 0.5, 0, s * 0.5);
+    ctx.quadraticCurveTo(-s * 0.46, s * 0.5, -s * 0.46, s * 0.15);
+    ctx.closePath();
+    ctx.fillStyle = '#CC0000';
+    ctx.fill();
+
+    // Face mask area — skin
+    ctx.beginPath();
+    ctx.arc(0, s * 0.08, s * 0.28, 0, Math.PI * 2);
+    ctx.fillStyle = '#f5c8a0';
+    ctx.fill();
+
+    // Face mask bars — white
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = s * 0.07;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(-s * 0.28, s * 0.08);
+    ctx.lineTo(s * 0.28, s * 0.08);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0, -s * 0.18);
+    ctx.lineTo(0, s * 0.34);
+    ctx.stroke();
+
+    // Eyes
+    ctx.fillStyle = '#222';
+    ctx.beginPath(); ctx.arc(-s * 0.12, s * 0.01, s * 0.06, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc( s * 0.12, s * 0.01, s * 0.06, 0, Math.PI * 2); ctx.fill();
+
+    // White helmet stripe
+    ctx.beginPath();
+    ctx.moveTo(0, -s * 0.46);
+    ctx.lineTo(0, s * 0.12);
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = s * 0.1;
+    ctx.stroke();
+
+    // Floating exclamation — give it some character
+    ctx.fillStyle = 'white';
+    ctx.font = `bold ${s * 0.35}px Arial`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('!', s * 0.55, -s * 0.55);
+
+    ctx.restore();
+  }
+
+  // Draw legend swatches
+  (function drawLegend() {
+    const b = document.getElementById('swatchBYU').getContext('2d');
+    b.fillStyle = '#002654';
+    b.fillRect(0, 0, 22, 22);
+    b.fillStyle = '#C8A951';
+    b.fillRect(9, 0, 4, 22);
+
+    const u = document.getElementById('swatchUTE').getContext('2d');
+    u.fillStyle = '#CC0000';
+    u.fillRect(0, 0, 22, 22);
+    u.fillStyle = 'white';
+    u.fillRect(9, 0, 4, 22);
+  })();
+
+  // ─── GAME STATE ──────────────────────────────────────────────────────────────
+
+  let snake, dir, nextDir, food, score, best, eaten, speed, loop, running;
+  best = 0;
+
+  function init() {
+    snake = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }];
+    dir = { x: 1, y: 0 };
+    nextDir = { x: 1, y: 0 };
+    score = 0; eaten = 0; speed = 140; running = false;
+    placeFood();
+    updateUI();
+  }
+
+  function placeFood() {
+    let p;
+    do { p = { x: Math.floor(Math.random() * COLS), y: Math.floor(Math.random() * ROWS) }; }
+    while (snake.some(s => s.x === p.x && s.y === p.y));
+    food = p;
+  }
+
+  function updateUI() {
+    document.getElementById('scoreVal').textContent = score;
+    document.getElementById('bestVal').textContent = best;
+    document.getElementById('eatenVal').textContent = eaten;
+  }
+
+  // ─── DRAW FRAME ──────────────────────────────────────────────────────────────
+
+  function drawGrid() {
+    ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i <= COLS; i++) {
+      ctx.beginPath(); ctx.moveTo(i * CELL, 0); ctx.lineTo(i * CELL, canvas.height); ctx.stroke();
+    }
+    for (let j = 0; j <= ROWS; j++) {
+      ctx.beginPath(); ctx.moveTo(0, j * CELL); ctx.lineTo(canvas.width, j * CELL); ctx.stroke();
+    }
+  }
+
+  function getDirStr() {
+    if (dir.x === 1)  return 'RIGHT';
+    if (dir.x === -1) return 'LEFT';
+    if (dir.y === -1) return 'UP';
+    return 'DOWN';
+  }
+
+  function draw() {
+    ctx.fillStyle = '#0d1321';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    drawGrid();
+
+    // Body segments
+    for (let i = 1; i < snake.length; i++) {
+      const cx = snake[i].x * CELL + CELL / 2;
+      const cy = snake[i].y * CELL + CELL / 2;
+      drawBYUBody(cx, cy, CELL);
+    }
+
+    // Head
+    const hx = snake[0].x * CELL + CELL / 2;
+    const hy = snake[0].y * CELL + CELL / 2;
+    drawBYUHead(hx, hy, CELL, getDirStr());
+
+    // Food (Ute)
+    const fx = food.x * CELL + CELL / 2;
+    const fy = food.y * CELL + CELL / 2;
+    drawUTEPlayer(fx, fy, CELL);
+  }
+
+  // ─── GAME TICK ───────────────────────────────────────────────────────────────
+
+  function tick() {
+    dir = nextDir;
+    const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+
+    if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) { endGame(); return; }
+    if (snake.some(s => s.x === head.x && s.y === head.y)) { endGame(); return; }
+
+    snake.unshift(head);
+
+    if (head.x === food.x && head.y === food.y) {
+      score += 10;
+      eaten++;
+      if (score > best) best = score;
+      if (eaten % 3 === 0 && speed > 60) {
+        speed -= 15;
+        clearInterval(loop);
+        loop = setInterval(tick, speed);
+      }
+      placeFood();
+    } else {
+      snake.pop();
+    }
+
+    updateUI();
+    draw();
+  }
+
+  function startGame() {
+    document.getElementById('startScreen').classList.add('hidden');
+    document.getElementById('endScreen').classList.add('hidden');
+    clearInterval(loop);
+    init();
+    running = true;
+    draw();
+    loop = setInterval(tick, speed);
+  }
+
+  function endGame() {
+    running = false;
+    clearInterval(loop);
+    if (score > best) best = score;
+    updateUI();
+    const msgs = [
+      "The Utes celebrated. Try again and show them who runs this state!",
+      "A Cougar always bounces back. Give it another shot!",
+      "This is Holy War. One loss means nothing. Rise up!",
+    ];
+    document.getElementById('endResult').textContent = `Score: ${score}  |  Utes Eaten: ${eaten}`;
+    document.getElementById('endMsg').textContent = msgs[Math.floor(Math.random() * msgs.length)];
+    document.getElementById('endScreen').classList.remove('hidden');
+    draw();
+  }
+
+  // ─── INPUT ───────────────────────────────────────────────────────────────────
+
+  document.addEventListener('keydown', e => {
+    const map = {
+      ArrowUp:    { x: 0, y: -1 },
+      ArrowDown:  { x: 0, y:  1 },
+      ArrowLeft:  { x: -1, y: 0 },
+      ArrowRight: { x:  1, y: 0 },
+    };
+    if (!map[e.key]) return;
+    e.preventDefault();
+    const d = map[e.key];
+    if (d.x !== -dir.x || d.y !== -dir.y) nextDir = d;
+  });
+
+  function tap(dir) {
+    const map = { UP:{ x:0,y:-1 }, DOWN:{ x:0,y:1 }, LEFT:{ x:-1,y:0 }, RIGHT:{ x:1,y:0 } };
+    const d = map[dir];
+    if (d && (d.x !== -window.dir?.x || d.y !== -window.dir?.y)) nextDir = d;
+    const ids = { UP:'btnU', DOWN:'btnD', LEFT:'btnL', RIGHT:'btnR' };
+    const btn = document.getElementById(ids[dir]);
+    btn.classList.add('pressed');
+    setTimeout(() => btn.classList.remove('pressed'), 150);
+  }
+
+  // Init
+  init();
+  draw();
+</script>
+
+</body>
+</html>

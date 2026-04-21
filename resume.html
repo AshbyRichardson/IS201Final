@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Résumé | Ashby Richardson</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy: #002654;
+      --royal: #0038A8;
+      --gold: #C8A951;
+      --light: #f5f5f0;
+    }
+    body { font-family: 'Lato', sans-serif; background: var(--light); color: #111; }
+
+    nav.navbar {
+      background: var(--navy) !important;
+      padding: 1rem 2rem;
+      position: sticky; top: 0; z-index: 999;
+      border-bottom: 3px solid var(--gold);
+    }
+    .navbar-brand { font-family: 'Playfair Display', serif; color: white !important; font-size: 1.4rem; }
+    .nav-link { color: rgba(255,255,255,0.85) !important; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; font-size: 0.82rem; margin: 0 0.3rem; transition: color 0.2s; }
+    .nav-link:hover { color: var(--gold) !important; }
+
+    /* PAGE HEADER */
+    .page-header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--royal) 100%);
+      padding: 4rem 2rem 3rem;
+      text-align: center;
+      border-bottom: 4px solid var(--gold);
+    }
+    .page-header h1 {
+      font-family: 'Playfair Display', serif;
+      color: white;
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+    .page-header p { color: rgba(255,255,255,0.7); font-size: 1.1rem; letter-spacing: 2px; text-transform: uppercase; }
+
+    /* RESUME LAYOUT */
+    .resume-wrapper { max-width: 960px; margin: 3rem auto; padding: 0 1.5rem 4rem; }
+
+    /* SIDEBAR */
+    .sidebar {
+      background: var(--navy);
+      color: white;
+      padding: 2.5rem 2rem;
+      border-radius: 4px;
+    }
+    .sidebar h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      margin-bottom: 0.2rem;
+    }
+    .sidebar .title { color: var(--gold); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 1.5rem; }
+    .sidebar-section { margin-bottom: 2rem; }
+    .sidebar-section h5 {
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(200,169,81,0.3);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .sidebar-section p, .sidebar-section a {
+      color: rgba(255,255,255,0.75);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      text-decoration: none;
+      display: block;
+    }
+    .skill-bar { margin-bottom: 0.8rem; }
+    .skill-bar span { font-size: 0.85rem; color: rgba(255,255,255,0.8); display: block; margin-bottom: 0.3rem; }
+    .bar-track { background: rgba(255,255,255,0.15); height: 6px; border-radius: 3px; }
+    .bar-fill { background: var(--gold); height: 6px; border-radius: 3px; }
+
+    /* MAIN CONTENT */
+    .main-content { padding-left: 2rem; }
+    @media(max-width:768px) { .main-content { padding-left: 0; margin-top: 2rem; } }
+
+    .resume-section { margin-bottom: 2.8rem; }
+    .resume-section h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--navy);
+      margin-bottom: 0.3rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 3px solid var(--gold);
+    }
+    .job-entry { margin: 1.5rem 0; }
+    .job-entry h5 { font-size: 1.05rem; font-weight: 700; color: #111; margin-bottom: 0.1rem; }
+    .job-entry .meta { font-size: 0.85rem; color: var(--royal); font-weight: 700; margin-bottom: 0.5rem; }
+    .job-entry ul { padding-left: 1.2rem; }
+    .job-entry ul li { font-size: 0.95rem; color: #444; margin-bottom: 0.3rem; line-height: 1.6; }
+
+    .edu-entry { margin: 1.5rem 0; }
+    .edu-entry h5 { font-size: 1.05rem; font-weight: 700; color: #111; }
+    .edu-entry .meta { font-size: 0.85rem; color: var(--royal); font-weight: 700; }
+    .edu-entry p { font-size: 0.95rem; color: #444; margin-top: 0.3rem; }
+
+    .skill-tag {
+      display: inline-block;
+      background: var(--navy);
+      color: white;
+      font-size: 0.8rem;
+      padding: 0.3rem 0.85rem;
+      margin: 0.25rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .skill-tag.gold { background: var(--gold); color: var(--navy); }
+
+    footer {
+      background: #0a0a0a;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.85rem;
+      border-top: 3px solid var(--gold);
+    }
+    footer .social-links a { color: rgba(255,255,255,0.5); margin: 0 0.5rem; font-size: 1.3rem; transition: color 0.2s; }
+    footer .social-links a:hover { color: var(--gold); }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">Ashby Richardson</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navMenu">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link active" href="resume.html">Résumé</a></li>
+        <li class="nav-item"><a class="nav-link" href="hobbies.html">Hobbies</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1>Résumé</h1>
+  <p>Education · Experience · Skills</p>
+</div>
+
+<div class="resume-wrapper">
+  <div class="row">
+
+    <!-- SIDEBAR -->
+    <div class="col-lg-4">
+      <div class="sidebar">
+        <h2>Ashby Richardson</h2>
+        <p class="title">Information Systems</p>
+
+        <div class="sidebar-section">
+          <h5>Contact</h5>
+          <a href="mailto:yourname@school.edu"><i class="fa-solid fa-envelope me-2"></i>ashbyrch@byu.edu</a>
+          <a href="#"><i class="fa-brands fa-linkedin me-2"></i>linkedin.com/in/ashby-richardson/</a>
+        </div>
+
+        <div class="sidebar-section">
+          <h5>Technical Skills</h5>
+          <div class="skill-bar"><span>Python</span><div class="bar-track"><div class="bar-fill" style="width:75%"></div></div></div>
+          <div class="skill-bar"><span>HTML/CSS</span><div class="bar-track"><div class="bar-fill" style="width:75%"></div></div></div>
+          <div class="skill-bar"><span>Tableu</span><div class="bar-track"><div class="bar-fill" style="width:75%"></div></div></div>
+          <div class="skill-bar"><span>SQL</span><div class="bar-track"><div class="bar-fill" style="width:75%"></div></div></div>
+          <div class="skill-bar"><span>Excel</span><div class="bar-track"><div class="bar-fill" style="width:75%"></div></div></div>
+        </div>
+
+        <div class="sidebar-section">
+          <h5>Soft Skills</h5>
+          <p>Leadership · Communication · Problem Solving · Teamwork · Adaptability</p>
+        </div>
+
+        <div class="sidebar-section">
+          <h5>Languages</h5>
+          <p>English (Native)<br/>Mandarin (Conversational)<br/>Croatian (Conversational)<br/>Bosnian (Conversational)<br/>Serbian (Conversational)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="col-lg-8">
+      <div class="main-content">
+
+        <!-- EDUCATION -->
+        <div class="resume-section">
+          <h3><i class="fa-solid fa-graduation-cap me-2" style="color:var(--gold)"></i>Education</h3>
+          <div class="edu-entry">
+            <h5>Bachelor of Science in Information Systems</h5>
+            <p class="meta">Brigham Young University &nbsp;|&nbsp; Provo, UT &nbsp;|&nbsp; Expected April 2028</p>
+            <p>Relevant Coursework: MKTG 201, IS 330, IS 201, IS 110</p>
+          </div>
+          <div class="edu-entry">
+            <h5>Associates of Science in University Studies</h5>
+            <p class="meta">Utah Valley University &nbsp;|&nbsp; Orem, UT &nbsp;|&nbsp; Graduated 2023</p>
+            <p>Relevant Coursework: Computer Programming, Mechatronics, Into to Business Management</p>
+          </div>
+          <div class="edu-entry">
+            <h5>High School Diploma</h5>
+            <p class="meta">Utah County Academy of Sciences &nbsp;|&nbsp; Orem, UT &nbsp;|&nbsp; Graduated 2023</p>
+            <p>Relevant Coursework: Intro to Computer Programming</p>
+          </div>
+        </div>
+
+        <!-- EXPERIENCE -->
+        <div class="resume-section">
+          <h3><i class="fa-solid fa-briefcase me-2" style="color:var(--gold)"></i>Work Experience</h3>
+
+          <div class="job-entry">
+            <h5>Data Analyst and Co-Owner</h5>
+            <p class="meta">Restore Cleaning LLC &nbsp;|&nbsp; Provo, UT &nbsp;|&nbsp; March 2026 – Present</p>
+            <ul>
+              <li>In charge of all the logistics and data of Restore Cleaning.</li>
+              <li>Created Restore Cleaning LLC to help families restore their homes all over Utah County.</li>
+            </ul>
+          </div>
+
+          <div class="job-entry">
+            <h5>Shift Lead</h5>
+            <p class="meta">Swig &nbsp;|&nbsp; Orem, UT &nbsp;|&nbsp; Sep 2021 – Dec 2022</p>
+            <ul>
+              <li>Helped lead team members throughout shift.</li>
+              <li>Assisted with all customer needs.</li>
+            </ul>
+          </div>
+
+          <div class="job-entry">
+            <h5>Full-time Volunteer</h5>
+            <p class="meta">The Church of Jesus Christ of Latter-Day Saints &nbsp;|&nbsp; Zagreb, Croatia &nbsp;|&nbsp; August 2023 – Aug 2025</p>
+            <ul>
+              <li>Completed 1000+ Hours of Community Service in the countries of Croatia, Bosnia & Herzegovina, and Serbia.</li>
+              <li>Helped lead and direct other Volunteers as needed.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- SKILLS -->
+        <div class="resume-section">
+          <h3><i class="fa-solid fa-star me-2" style="color:var(--gold)"></i>Skills & Tools</h3>
+          <div style="margin-top:1rem;">
+            <span class="skill-tag gold">Python</span>
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">HTML/CSS</span>
+            <span class="skill-tag gold">Tableau</span>
+            <span class="skill-tag">SQL</span>
+            <span class="skill-tag">Excel</span>
+            <span class="skill-tag gold">Bootstrap</span>
+            <span class="skill-tag">Git/GitHub</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="social-links mb-2">
+    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+  </div>
+  <p>&copy; 2025 Ashby Richardson. All rights reserved.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
